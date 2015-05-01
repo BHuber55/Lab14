@@ -13,35 +13,66 @@ using namespace std;
 
 void deleteCDs(ListArray<CD>* list)
 {
-   ListArrayIterator<CD>* iter = list->iterator();
+	ListArrayIterator<CD>* iter = list->iterator();
 
-   while(iter->hasNext())
-   {
-      CD* cd = iter->next();
-      delete cd;
-   }
-   delete iter;
+	while (iter->hasNext())
+	{
+		CD* cd = iter->next();
+		delete cd;
+	}
+	delete iter;
 }
 
 int main()
 {
-   ListArray<CD>* cds = CD::readCDs("cds.txt");
-   int num_items = cds->size();
-   cout << num_items << endl;
+	ListArray<CD>* cds = CD::readCDs("cds.txt");
+	int num_items = cds->size();
+	cout << num_items << endl;
 
-   TableSortedList<CD>* slt = new TableSortedList<CD>(&CD::compare_items, &CD::compare_keys);
+	TableSortedList<CD>* slt = new TableSortedList<CD>(&CD::compare_items, &CD::compare_keys);
 
-   //DO THIS
-   //thoroughly test your table
+	//DO THIS
+	//thoroughly test your table
 
+	ListArrayIterator<CD>* iter = cds->iterator();
 
+	while (iter->hasNext())
+	{
+		CD* cd = iter->next();
+		String* title = cd->getKey();
+		title->displayString();
+		cout << endl;
+		slt->tableInsert(cd);
+	}
 
+	cout << endl  << "Hit enter to continue." << endl;
+	cin.get();
 
+	//to dipslay
+	ListDoublyLinkedIterator<CD>* iter2 = slt->iterator();
+	
+	String* title = new String("Years In Waste");
 
+	bool rem = slt->tableRemove(title);
+	if (rem)
+	{
+		cout << "Removed item" << endl << endl;
+	}
+	
+	while (iter2->hasNext())
+	{
+		CD* cd = iter2->next();
+		String* title = cd->getKey();
+		title->displayString();
+		cout << endl;
+	}
+	
+	cout << endl;
+	cout << slt->tableSize() << endl;
 
-
-   deleteCDs(cds);
-   delete cds;
-   delete slt;
-   return 0;
+	delete title;
+	deleteCDs(cds);
+	delete cds;
+	delete slt;
+	return 0;
 }
