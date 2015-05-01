@@ -44,35 +44,47 @@ int main()
 		cout << endl;
 		slt->tableInsert(cd);
 	}
+	delete iter;
 
 	cout << endl  << "Hit enter to continue." << endl;
 	cin.get();
 
 	//to dipslay
+	TableSortedList<CD>* slt2 = new TableSortedList<CD>(&CD::compare_items, &CD::compare_keys);
 	ListDoublyLinkedIterator<CD>* iter2 = slt->iterator();
 	
-	String* title = new String("Years In Waste");
+	while (iter2->hasNext())
+	{
+		CD* cd = iter2->next();
+		String* title2 = cd->getKey();
+		title2->displayString();
+		cout << endl;
+		slt2->tableInsert(cd);
+	}
+	delete iter2;
 
-	bool rem = slt->tableRemove(title);
+	String* random = new String("Dead Calm Chaos");
+
+	bool rem = slt2->tableRemove(random);
 	if (rem)
 	{
 		cout << "Removed item" << endl << endl;
 	}
 	
+	iter2 = slt2->iterator();
 	while (iter2->hasNext())
 	{
 		CD* cd = iter2->next();
-		String* title = cd->getKey();
-		title->displayString();
+		String* random2 = cd->getKey();
+		random2->displayString();
 		cout << endl;
 	}
-	
-	cout << endl;
-	cout << slt->tableSize() << endl;
 
-	delete title;
+	delete random;
 	deleteCDs(cds);
 	delete cds;
 	delete slt;
+	delete slt2;
+
 	return 0;
 }
